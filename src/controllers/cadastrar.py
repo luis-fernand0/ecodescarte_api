@@ -1,5 +1,4 @@
-from flask import jsonify, make_response, request
-import mysql.connector
+from flask import jsonify, request
 from db_config.db_conection import create_conection
 
 def cadastrar():
@@ -29,10 +28,13 @@ def cadastrar():
 
             return jsonify({"message": "Ponto de descarte cadastrado com sucesso!"}), 201
 
-    except mysql.connector.Error as err:
+    except Exception as err:
+        if err.errno == 1062:
+            return jsonify({"message": f"Não foi possivel cadastrar o ponto de descarte! Já existe um ponto com esses dados"}), 409
+
         return jsonify({
             "message": f"Não foi possivel cadastrar o ponto de descarte! Erro: {err}"
-        })
+        }), 500
     finally:
         if cursor:
             cursor.close()
