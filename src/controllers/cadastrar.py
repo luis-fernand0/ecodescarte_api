@@ -11,17 +11,16 @@ def cadastrar():
             data = request.form.to_dict()
             
             nome = data.get("nome")
-            cnpj = data.get("cnpj")
             estado = data.get("estado")
             cidade = data.get("cidade")
             endereco = data.get("endereco")
             numero = data.get("numero")
             
             insert_query = """
-                INSERT INTO pontos (nome, cnpj, estado, cidade, endereco, numero)
-                VALUES (%s, %s, %s, %s, %s, %s)
+                INSERT INTO pontos (nome, uf, cidade, endereco, numero)
+                VALUES (%s, %s, %s, %s, %s)
             """
-            values = (nome, cnpj, estado, cidade, endereco, numero)
+            values = (nome, estado, cidade, endereco, numero)
 
             cursor.execute(insert_query, values)
             conection.commit()
